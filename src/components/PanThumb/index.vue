@@ -2,7 +2,7 @@
   <div :style="{zIndex:zIndex,height:height,width:width}" class="pan-item">
     <div class="pan-info">
       <div class="pan-info-roles-container">
-        <slot />
+        <slot/>
       </div>
     </div>
     <!-- eslint-disable-next-line -->
@@ -15,7 +15,8 @@ export default {
   name: 'PanThumb',
   props: {
     image: {
-      type: String,
+      //TODO 不注释会报错
+      // type: String,
       required: true
     },
     zIndex: {

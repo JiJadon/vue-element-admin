@@ -1,36 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
-Vue.use(Router)
-
-/* Layout */
 import Layout from '@/layout'
 
 /* Router Modules */
-import componentsRouter from './modules/components'
-import chartsRouter from './modules/charts'
-import nestedRouter from './modules/nested'
 
-/**
- * Note: sub-menu only appear when route children.length >= 1
- * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
- *
- * hidden: true                   if set true, item will not show in the sidebar(default is false)
- * alwaysShow: true               if set true, will always show the root menu
- *                                if not set alwaysShow, when item has more than one children route,
- *                                it will becomes nested mode, otherwise not show the root menu
- * redirect: noRedirect           if set noRedirect will no redirect in the breadcrumb
- * name:'router-name'             the name is used by <keep-alive> (must set!!!)
- * meta : {
-    roles: ['admin','editor']    control the page roles (you can set multiple roles)
-    title: 'title'               the name show in sidebar and breadcrumb (recommend set)
-    icon: 'svg-name'/'el-icon-x' the icon show in the sidebar
-    noCache: true                if set true, the page will no be cached(default is false)
-    affix: true                  if set true, the tag will affix in the tags-view
-    breadcrumb: false            if set false, the item will hidden in breadcrumb(default is true)
-    activeMenu: '/example/list'  if set path, the sidebar will highlight the path you set
-  }
- */
+Vue.use(Router)
 
 /**
  * constantRoutes
@@ -79,21 +53,121 @@ export const constantRoutes = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+        meta: {title: '首页', icon: 'dashboard', affix: true}
+      }
+    ]
+  },
+  {
+    path: '/goods',
+    component: Layout,
+    redirect: '/goods/goodsList',
+    meta: {title: '商品中心', icon: 'el-icon-s-goods'},
+    children: [
+      {
+        path: 'goodsList',
+        component: () => import('@/views/goods/goodsList'),
+        name: 'goodsList',
+        meta: {title: '商品列表', icon: ''}
+      },
+      {
+        path: 'updateGoods',
+        component: () => import('@/views/goods/update'),
+        name: 'updateGoods',
+        meta: {title: '商品信息'},
+        props: true,
+        hidden: true
+      },
+      {
+        path: 'addGoods',
+        component: () => import('@/views/goods/add'),
+        name: 'addGoods',
+        meta: {title: '商品信息'},
+        props: true,
+        hidden: true
+      },
+      {
+        path: 'goodsCategory',
+        component: () => import('@/views/goods/goodsCategory'),
+        name: 'goodsCategory',
+        meta: {title: '商品分类', icon: ''}
+      },
+      {
+        path: 'banner',
+        component: () => import('@/views/goods/banner'),
+        name: 'banner',
+        meta: {title: '轮播图管理', icon: ''}
+      },
+    ]
+  },
+  {
+    path: '/promotion',
+    component: Layout,
+    redirect: '/promotion/seckill',
+    meta: {title: '营销中心', icon: 'el-icon-orange'},
+    children: [
+      {
+        path: 'seckill',
+        component: () => import('@/views/promotion/seckill'),
+        name: 'seckill',
+        meta: {title: '秒杀活动', icon: ''}
+      },
+      {
+        path: 'recommend',
+        component: () => import('@/views/promotion/recommend'),
+        name: 'recommend',
+        meta: {title: '人气推荐'}
       }
     ]
   },
 
   {
-    path: '/guide',
+    path: '/order',
     component: Layout,
-    redirect: '/guide/index',
+    name: 'order',
+    redirect: '/order/orderInfo',
+    meta: {title: '订单中心', icon: 'el-icon-s-order'},
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/guide/index'),
-        name: 'Guide',
-        meta: { title: 'Guide', icon: 'guide', noCache: true }
+        path: 'orderInfo',
+        component: () => import('@/views/order/orderInfo'),
+        name: 'orderInfo',
+        meta: {title: '订单详情', icon: ''}
+      },
+      {
+        path: 'comment',
+        component: () => import('@/views/order/comment'),
+        name: 'comment',
+        meta: {title: '评价管理'}
+      }
+    ]
+  },
+  {
+    path: '/member',
+    component: Layout,
+    name: 'member',
+    redirect: '/member/memberList',
+    meta: {title: '会员管理', icon: 'el-icon-s-custom'},
+    children: [
+      {
+        path: 'memberList',
+        component: () => import('@/views/member/memberList'),
+        name: 'memberList',
+        meta: {title: '会员中心'}
+      }
+    ]
+  },
+  {
+    path: '/operation',
+    component: Layout,
+    name: 'operation',
+    redirect: '/operation/es',
+    meta: {title: '运营设置', icon: 'el-icon-search'},
+    children: [
+      {
+        path: 'operation',
+        component: () => import('@/views/operation/es'),
+        name: 'operation',
+        meta: {title: '搜索分词'}
       }
     ]
   },
@@ -107,7 +181,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/profile/index'),
         name: 'Profile',
-        meta: { title: 'Profile', icon: 'user', noCache: true }
+        meta: {title: '个人信息', icon: 'user', noCache: true}
       }
     ]
   }
@@ -126,18 +200,26 @@ export const asyncRoutes = [
     alwaysShow: true, // will always show the root menu
     name: 'Permission',
     meta: {
-      title: 'Permission',
+      title: '权限管理',
       icon: 'lock',
-      roles: ['admin', 'manager'] // you can set roles in root nav
+      roles: ['admin'] //TODO 拥有admin角色才能显示此菜单
     },
     children: [
-
       {
         path: 'role',
         component: () => import('@/views/permission/role'),
         name: 'RolePermission',
         meta: {
-          title: 'Role Permission',
+          title: '角色管理',
+          roles: ['admin']
+        }
+      },
+      {
+        path: 'user',
+        component: () => import('@/views/permission/user'),
+        name: 'UserPermission',
+        meta: {
+          title: '用户管理',
           roles: ['admin']
         }
       }
@@ -145,48 +227,48 @@ export const asyncRoutes = [
   },
 
   /** when your routing map is too long, you can split it into small modules **/
-  componentsRouter,
-  chartsRouter,
-  nestedRouter,
-
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/list',
-    name: 'Example',
-    meta: {
-      title: 'Example',
-      icon: 'el-icon-s-help'
-    },
-    children: [
-      {
-        path: 'create',
-        component: () => import('@/views/example/create'),
-        name: 'CreateArticle',
-        meta: { title: 'Create Article', icon: 'edit' }
-      },
-      {
-        path: 'edit/:id(\\d+)',
-        component: () => import('@/views/example/edit'),
-        name: 'EditArticle',
-        meta: { title: 'Edit Article', noCache: true, activeMenu: '/example/list' },
-        hidden: true
-      },
-      {
-        path: 'list',
-        component: () => import('@/views/example/list'),
-        name: 'ArticleList',
-        meta: { title: 'Article List', icon: 'list' }
-      }
-    ]
-  },
+  // componentsRouter,
+  // chartsRouter,
+  // nestedRouter,
+  //
+  // {
+  //   path: '/example',
+  //   component: Layout,
+  //   redirect: '/example/list',
+  //   name: 'Example',
+  //   meta: {
+  //     title: 'Example',
+  //     icon: 'el-icon-s-help'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'create',
+  //       component: () => import('@/views/example/create'),
+  //       name: 'CreateArticle',
+  //       meta: {title: 'Create Article', icon: 'edit'}
+  //     },
+  //     {
+  //       path: 'edit/:id(\\d+)',
+  //       component: () => import('@/views/example/edit'),
+  //       name: 'EditArticle',
+  //       meta: {title: 'Edit Article', noCache: true, activeMenu: '/example/list'},
+  //       hidden: true
+  //     },
+  //     {
+  //       path: 'list',
+  //       component: () => import('@/views/example/list'),
+  //       name: 'ArticleList',
+  //       meta: {title: 'Article List', icon: 'list'}
+  //     }
+  //   ]
+  // },
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  {path: '*', redirect: '/404', hidden: true}
 ]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
+  scrollBehavior: () => ({y: 0}),
   routes: constantRoutes
 })
 

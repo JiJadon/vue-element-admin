@@ -12,18 +12,6 @@ const componentsRouter = {
     icon: 'component'
   },
   children: [
-    {
-      path: 'tinymce',
-      component: () => import('@/views/components-demo/tinymce'),
-      name: 'TinymceDemo',
-      meta: { title: 'Tinymce' }
-    },
-    {
-      path: 'avatar-upload',
-      component: () => import('@/views/components-demo/avatar-upload'),
-      name: 'AvatarUploadDemo',
-      meta: { title: 'Upload' }
-    },
 
     {
       path: 'sticky',

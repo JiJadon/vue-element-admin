@@ -2,14 +2,14 @@ import request from '@/utils/request'
 
 export function getRoutes() {
   return request({
-    url: '/routes',
+    url: '/user/routes',
     method: 'get'
   })
 }
 
 export function getRoles() {
   return request({
-    url: '/roles',
+    url: '/user/roles',
     method: 'get'
   })
 }

@@ -26,7 +26,7 @@
 
 <script>
 import path from 'path'
-import { isExternal } from '@/utils/validate'
+import {isExternal} from '@/utils/validate'
 import Item from './Item'
 import AppLink from './Link'
 import FixiOSBug from './FixiOSBug'
@@ -51,8 +51,6 @@ export default {
     }
   },
   data() {
-    // To fix https://github.com/PanJiaChen/vue-admin-template/issues/237
-    // TODO: refactor with render function
     this.onlyOneChild = null
     return {}
   },
